@@ -16,7 +16,7 @@ export default class Todo extends Component {
       // State For Alert Message
       message: "",
       // State For Theme
-      theme: "",
+      checked: false,
     };
   }
   static contextType = todoContext;
@@ -41,7 +41,7 @@ export default class Todo extends Component {
   inputHandler = (e) => {
     this.setState({ input: e.target.value });
   };
-  // Add Todo Handler
+  // Add Handler
   addHandler = () => {
     // Check Validation
     if (this.state.input === "") {
@@ -60,13 +60,10 @@ export default class Todo extends Component {
   // Theme Handler
   themeHandler = (e) => {
     const theme = this.context;
-    if (e.target.checked === true) {
-      theme.theme = "Dark";
-      this.setState({ theme: "Dark" });
-    } else {
-      theme.theme = "Light";
-      this.setState({ theme: "Light" });
-    }
+    this.setState({ checked: e.target.checked });
+    e.target.checked === true
+      ? (theme.theme = "Dark")
+      : (theme.theme = "Light");
   };
 
   render() {
@@ -75,13 +72,13 @@ export default class Todo extends Component {
         <div className="todo">
           <div className="d-flex justify-content-between">
             <h1 style={{ textAlign: "center" }}>Todos</h1>
-            <div class="check-box">
+            <div className="check-box">
               <input onChange={this.themeHandler} type="checkbox" />
               <br></br>
               <label>{this.context.theme} theme</label>
             </div>
           </div>
-          {/* Input Add Todo Form */}
+          {/* Input Add Form */}
           <InputGroup className="mb-3">
             <Form.Control
               placeholder="Type New Todo..."
@@ -116,12 +113,12 @@ export default class Todo extends Component {
             </center>
           ) : (
             <div className="todo__list">
-              {/* Display Todo List */}
+              {/* Display List */}
               <h1 style={{ textAlign: "center" }}>All Todos</h1>
               <ListGroup>
                 {JSON.parse(localStorage.getItem("myTodo")).map(
                   (val, index) => (
-                    <ListGroup.Item className="p-3 mb-3">
+                    <ListGroup.Item key={val.id} className="p-3 mb-3">
                       <span>
                         <span className="me-5">{index + 1}:</span>
                         {val.todo}

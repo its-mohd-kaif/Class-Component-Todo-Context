@@ -18,17 +18,17 @@ export default class Search extends Component {
     // Make Local Array
     let temp = [];
     let allData = JSON.parse(localStorage.getItem("myTodo"));
+
     if (e.target.value.length >= 2) {
-      for (let i = 0; i < allData.length; i++) {
-        if (
-          allData[i].todo.toLowerCase().includes(e.target.value.toLowerCase())
-        ) {
-          temp.push(allData[i]);
+      // eslint-disable-next-line array-callback-return
+      allData.map((val) => {
+        if (val.todo.toLowerCase().includes(e.target.value.toLowerCase())) {
+          temp.push(val);
           this.setState({ message: false });
         } else {
           this.setState({ message: true });
         }
-      }
+      });
       this.setState({ search: temp });
     } else if (e.target.value.length === 0) {
       this.setState({ search: [] });
@@ -41,7 +41,7 @@ export default class Search extends Component {
         <center>
           <InputGroup style={{ width: "70%" }} className="mb-3">
             <InputGroup.Text id="basic-addon1">
-              <i class="fas fa-search"></i>
+              <i className="fas fa-search"></i>
             </InputGroup.Text>
             <Form.Control
               placeholder="Search Your Todos..."
@@ -51,13 +51,13 @@ export default class Search extends Component {
             />
           </InputGroup>
         </center>
-        {/* Search Todo List */}
+        {/* Search List */}
         {this.state.search.length !== 0 ? (
           <div className="todo__list">
             <h1 style={{ textAlign: "center" }}>Your Search Result</h1>
             <ListGroup>
               {this.state.search.map((val, index) => (
-                <ListGroup.Item className="p-3 mb-3">
+                <ListGroup.Item key={val.id} className="p-3 mb-3">
                   <span>
                     <span className="me-5">{index + 1}:</span>
                     {val.todo}
